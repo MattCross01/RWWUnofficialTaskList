@@ -135,4 +135,38 @@
         app.listen(port, () => console.log(`Listening on port ${port}`));
         app.use(express.static('public'));
 
+        // ROUTES 
 
+        app.get('/', (req, res) => res.sendFile(__dirname + '/index.html'));
+        app.get('/tasks', (req, res) => res.send(tasks));
+        app.post('tasks', (req, res) => {
+            tasks.push(req.body);
+            res.send(tasks);
+        }, (err) => console.log(err));
+        app.put('/tasks/:id', (req, res) => {
+            const { id } = req.params;
+            const task = tasks.find(task => task.id === id);
+            task.task = req.body.task;
+            res.send(tasks);
+        }, (err) => console.log(err));
+            app.put('tasks', (req, res) => {
+            tasks.push(req.body);
+            res.send(tasks);
+        }
+        , (err) => console.log(err));
+        app.delete('/tasks/:id', (req, res) => {
+            const { id } = req.params;
+            tasks = tasks.filter(task => task.id !== id);
+            res.send(tasks);
+        },
+        (err) => console.log(err));
+        app.delete('tasks', (req, res) => {
+            tasks = [];
+            res.send(tasks);
+        },
+        (err) => console.log(err));
+        app.get('/tasks/:id', (req, res) => {
+            const { id } = req.params;
+            const task = tasks.find(task => task.id === id);
+            res.send(task);
+        }, (err) => console.log(err));
